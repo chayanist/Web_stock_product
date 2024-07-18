@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Product Categories</title>
+</head>
+<body>
+    <h1>Product Categories</h1>
+    <ul id="categoryList">
+    </ul>
+    
+    <div id="productList">
+    </div>
+    
+    <div id="productDetails">
+    </div>
+    
+    <script type="module">
+
+        import { clothingCategories, appliancesCategories } from './categories.js';
+
+        function displayProducts(category) {
+            let productList = document.getElementById('productList');
+            productList.innerHTML = '';
+            let productDetails = document.getElementById('productDetails');
+            productDetails.innerHTML = '';
+            
+            category.forEach(product => {
+                let productItem = document.createElement('div');
+                productItem.textContent = product.name;
+                productItem.classList.add('product-item');
+                productItem.addEventListener('click', () => displayProductDetails(product));
+                productList.appendChild(productItem);
+            });
+        }
+
+
+        function displayProductDetails(product) {
+            let productDetails = document.getElementById('productDetails');
+            productDetails.innerHTML = `<p>รหัสสินค้า : ${product.id}</p>
+                                        <p>ชื่อสินค้า : ${product.inName}</p>
+                                        <p>รายละเอียดสินค้า : ${product.description}</p>
+                                        <p>จำนวนสต็อกสินค้าที่มีอยู่: ${product.stock}</p>`;
+            
+
+            if (product.size) { 
+                productDetails.innerHTML += `<p>ขนาด  : ${product.size}</p>`;
+            }
+            if (product.color) { 
+                productDetails.innerHTML += `<p>สี : ${product.color}</p>`;
+            }
+            if (product.material) {
+                productDetails.innerHTML += `<p>วัสดุ: ${product.material}</p>`;
+            }
+             if (product.brand) { 
+                productDetails.innerHTML += `<p>แบรนด์: ${product.brand}</p>`;
+            }
+            if (product.powerConsumption) { 
+                productDetails.innerHTML += `<p>พลังงาน: ${product.powerConsumption}</p>`;
+            }
+        }
+
+        function createCategoryList() {
+            let categoryList = document.getElementById('categoryList');
+            
+            let clothingCategoryItem = document.createElement('li');
+            clothingCategoryItem.textContent = 'เสื้อผ้า';
+            clothingCategoryItem.addEventListener('click', () => displayProducts(clothingCategories));
+            categoryList.appendChild(clothingCategoryItem);
+
+            let appliancesCategoryItem = document.createElement('li');
+            appliancesCategoryItem.textContent = 'อุปกรณ์อิเล็กทรอนิกส์';
+            appliancesCategoryItem.addEventListener('click', () => displayProducts(appliancesCategories));
+            categoryList.appendChild(appliancesCategoryItem);
+        }
+
+        createCategoryList();
+    </script>
+</body>
+</html>
